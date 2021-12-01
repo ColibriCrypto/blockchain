@@ -1,0 +1,92 @@
+#!/sbin/openrc-run
+
+# backward compatibility for existing gentoo layout
+#
+if [ -d "/var/lib/clbi/.clbi" ]; then
+	CLBI_DEFAULT_DATADIR="/var/lib/clbi/.clbi"
+else
+	CLBI_DEFAULT_DATADIR="/var/lib/clbid"
+fi
+
+CLBI_CONFIGFILE=${CLBI_CONFIGFILE:-/etc/clbi/clbi.conf}
+CLBI_PIDDIR=${CLBI_PIDDIR:-/var/run/clbid}
+CLBI_PIDFILE=${CLBI_PIDFILE:-${CLBI_PIDDIR}/clbid.pid}
+CLBI_DATADIR=${CLBI_DATADIR:-${CLBI_DEFAULT_DATADIR}}
+CLBI_USER=${CLBI_USER:-${CLBI_USER:-clbi}
+CLBI_GROUP=${CLBI_GROUP:-clbi}
+CLBI_BIN=${CLBI_BIN:-/usr/bin/clbid}
+CLBI_NICE=${CLBI_NICE:-${NICELEVEL:-0}}
+CLBI_OPTS="${CLBI_OPTS:-${CLBI_OPTS}}"
+
+name="clbi Core Daemon"
+description="clbi crypto-currency p2p network daemon"
+
+command="/usr/bin/clbid"
+command_args="-pid=\"${CLBI_PIDFILE}\" \
+		-conf=\"${CLBI_CONFIGFILE}\" \
+		-datadir=\"${CLBI_DATADIR}\" \
+		-daemon \
+		${CLBI_OPTS}"
+
+required_files="${CLBI_CONFIGFILE}"
+start_stop_daemon_args="-u ${CLBI_USER} \
+			-N ${CLBI_NICE} -w 2000"
+pidfile="${CLBI_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${CLBI_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${CLBI_USER}:${CLBI_GROUP}" \
+	"${CLBI_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${CLBI_USER}:${CLBI_GROUP}" \
+	"${CLBI_PIDDIR}"
+
+	checkpath -f \
+	-o ${CLBI_USER}:${CLBI_GROUP} \
+	-m 0660 \
+	${CLBI_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${CLBI_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run clbid."
+		eerror "The setting must appear in ${CLBI_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following"
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"clbi Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}

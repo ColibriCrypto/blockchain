@@ -1,0 +1,5 @@
+CLBI               ICON    " clbi/clbi.ico"
+
+#include "wx/msw/wx.rc"
+
+favicon               ICON    " clbi/favicon.ico"

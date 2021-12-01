@@ -1,0 +1,33 @@
+# /etc/conf.d/clbid: config file for /etc/init.d/clbid
+
+# Config file location
+#CLBI_CONFIGFILE="/etc/clbi/clbi.conf"
+
+# What directory to write pidfile to?  (created and owned by $CLBI_USER)
+#CLBI_PIDDIR="/var/run/clbid"
+
+# What filename to give the pidfile
+#CLBI_PIDFILE="${CLBI_PIDDIR}/clbid.pid"
+
+# Where to write clbid data (be mindful that the blockchain is large)
+#CLBI_DATADIR="/var/lib/clbid"
+
+# User and group to own clbid process
+#CLBI_USER="clbi"
+#CLBI_GROUP="clbi"
+
+# Path to clbid executable
+#CLBI_BIN="/usr/bin/clbid"
+
+# Nice value to run clbid under
+#CLBI_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#CLBI_OPTS=""
+
+# The timeout in seconds OpenRC will wait for CLBI to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+CLBI_SIGTERM_TIMEOUT=60
