@@ -1,0 +1,15 @@
+# http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-1.0.html
+
+[Desktop Entry]
+Encoding=UTF-8
+Name=clbi Core Daemon SNAP
+Comment=mainet
+GenericName=clbi Digital Currency Daemon Client mainet network
+Exec=clbi-core.daemon-mainet %u
+Terminal=true
+Type=Application
+Icon=${SNAP}/share/ clbi/clbi_mainet.png
+MimeType=x-scheme-handler/clbi;
+Categories=X-Office;X-Finance;
+Keywords=internet;clbi;zclbi;core;wallet;daemon;mainet;snap;launchpad;crypto;digital;currency;coin;token;zerocoin;
+Version=1.0

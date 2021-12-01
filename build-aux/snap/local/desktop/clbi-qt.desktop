@@ -1,0 +1,15 @@
+# http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-1.0.html
+
+[Desktop Entry]
+Encoding=UTF-8
+Name=clbi Core
+Comment=clbi Core QT main network
+GenericName=clbi Digital Currency QT client main network
+Exec=clbi-core.qt %u
+Terminal=false
+Type=Application
+Icon=${SNAP}/share/ clbi/clbi.png
+MimeType=x-scheme-handler/clbi;
+Categories=X-Office;X-Finance;
+Keywords=internet;clbi;zclbi;clbi;core;wallet;qt;main;snap;launchpad;crypto;digital;currency;coin;token;
+Version=1.0

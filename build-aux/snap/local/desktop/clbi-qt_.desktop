@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=CLBI Core
+Comment=CLBI Core QT test network
+GenericName=CLBI Digital Currency QT client   network
+Exec=CLBI-core.qt-  %u
+Terminal=false
+Type=Application
+Icon=${SNAP}/share/ clbi/clbi_mainet.png
+MimeType=x-scheme-handler/clbi;
+Categories=X-Office;X-Finance;
+Keywords=internet;CLBI;zclbi;tclbi;core;wallet;qt; ;snap;launchpad;crypto;digital;currency; ;token;
+Version=1.0
