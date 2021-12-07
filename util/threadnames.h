@@ -1,0 +1,31 @@
+// Copyright (c)   2021 The CLBI Core developers
+//      
+//   
+
+#ifndef CLBI_UTIL_THREADNAMES_H
+#define CLBI_UTIL_THREADNAMES_H
+
+#include <string>
+
+namespace util {
+//! Rename a thread both in terms of an internal (in-memory) name as well
+//! as its system thread name.
+//! @note Do not call this for the main thread, as this will interfere with
+//! UNIX utilities such as top and killall. Use ThreadSetInternalName instead.
+void ThreadRename(std::string&&);
+
+//! Set the internal (in-memory) name of the current thread only.
+void ThreadSetInternalName(std::string&&);
+
+//! Get the thread's internal (in-memory) name; used e.g. for identification in
+//! logging.
+const std::string& ThreadGetInternalName();
+
+} // namespace util
+
+namespace ctpl {
+    class thread_pool;
+}
+void RenameThreadPool(ctpl::thread_pool& tp, const char* baseName);
+
+#endif // CLBI_UTIL_THREADNAMES_H
